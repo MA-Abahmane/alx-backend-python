@@ -16,4 +16,4 @@ async def task_wait_n(n: int, max_delay: int) -> List[float]:
     """ an async routine that takes in 2 arg and returns a list of delays """
     tasks = [task_wait_random(max_delay) for _ in range(n)]
     delays = await asy.gather(*tasks)
-    return delays
+    return sorted(delays)
