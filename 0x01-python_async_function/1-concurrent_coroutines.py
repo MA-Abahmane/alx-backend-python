@@ -12,10 +12,11 @@ using sort() because of concurrency.
 """
 
 import asyncio as asy
+from typing import List
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n, max_delay):
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """ an async routine that takes in 2 args and returns a list of delays """
     delays = await asy.gather(*(wait_random(max_delay) for _ in range(n)))
-    return delays
+    return sorted(delays)
