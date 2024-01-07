@@ -81,5 +81,3 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # Access the _public_repos_url property
         test_return = test_client.has_license(repo, license_key)
-
-        #
