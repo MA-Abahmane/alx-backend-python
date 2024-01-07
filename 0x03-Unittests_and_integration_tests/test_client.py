@@ -21,8 +21,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.get_json', return_value={'payload': True})
     def test_org(self, test_case, mock_get_json):
-        """
-        Test that GithubOrgClient.org returns the correct value
+        """ Test that GithubOrgClient.org returns the correct value
         """
         # Create an instance of GithubOrgClient with the provided
         #  organization name
@@ -41,6 +40,25 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
                   return_value={"repos_url": "holberton"})
     def test_public_repos_url(self, mock_org):
+        """ Test _public_repos_url property
+        """
+
+        # Create an instance of GithubOrgClient
+        test_client = GithubOrgClient("holberton")
+
+        # Access the _public_repos_url property
+        test_return = test_client._public_repos_url
+
+        # Assert that the org property was accessed exactly once
+        mock_org.assert_called_once_with()
+
+        # Assert that the result is equal to the expected
+        #  repos_url from the mocked org property
+        self.assertEqual(test_return, mock_org.return_value.get("repos_url"))
+
+    @patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
+                  return_value={"repos_url": "holberton"})
+    def test_public_repos(self, mock_org):
         """Test _public_repos_url property"""
 
         # Create an instance of GithubOrgClient
