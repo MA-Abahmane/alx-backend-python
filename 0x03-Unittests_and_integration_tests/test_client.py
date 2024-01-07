@@ -68,11 +68,11 @@ class TestGithubOrgClient(unittest.TestCase):
         # Access the _public_repos_url property
         test_return = test_client.public_repos
 
-    @parameterized.extend([
-        ({"license": {"key": "my_license"}}, "my_license"),
-        ({"license": {"key": "other_license"}}, "my_license"),
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False),
     ])
-    def test_has_license(self, repo, license_key):
+    def test_has_license(self, repo, license_key, expected_output):
         """ Test _public_repos_url property
         """
 
@@ -81,3 +81,6 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # Access the _public_repos_url property
         test_return = test_client.has_license(repo, license_key)
+
+        # compare results
+        self.assertEqual(test_return, expected_output)
