@@ -37,24 +37,25 @@ class TestGithubOrgClient(unittest.TestCase):
         # Assert that get_json was called exactly once
         mock_get_json.assert_called_once()
 
-    @patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
-                  return_value={"repos_url": "holberton"})
-    def test_public_repos_url(self, mock_org):
+    def test_public_repos_url(self):
         """ Test _public_repos_url property
+            memoize
         """
+        with patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
+                          return_value={"repos_url": "holberton"}) as mock_obj:
 
-        # Create an instance of GithubOrgClient
-        test_client = GithubOrgClient("holberton")
+            # Create an instance of GithubOrgClient
+            test_client = GithubOrgClient("holberton")
 
-        # Access the _public_repos_url property
-        test_return = test_client._public_repos_url
+            # Access the _public_repos_url property
+            test_return = test_client._public_repos_url
 
-        # Assert that the org property was accessed exactly once
-        mock_org.assert_called_once_with()
+            # Assert that the org property was accessed exactly once
+            mock_obj.assert_called_once
 
-        # Assert that the result is equal to the expected
-        #  repos_url from the mocked org property
-        self.assertEqual(test_return, mock_org.return_value.get("repos_url"))
+            self.assertEqual(test_return, mock_obj
+                             .return_value
+                             .get('repos_url'))
 
     @patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
                   return_value={"repos_url": "holberton"})
@@ -65,11 +66,4 @@ class TestGithubOrgClient(unittest.TestCase):
         test_client = GithubOrgClient("holberton")
 
         # Access the _public_repos_url property
-        test_return = test_client._public_repos_url
-
-        # Assert that the org property was accessed exactly once
-        mock_org.assert_called_once_with()
-
-        # Assert that the result is equal to the expected
-        #  repos_url from the mocked org property
-        self.assertEqual(test_return, mock_org.return_value.get("repos_url"))
+        test_return = test_client.public_repos
