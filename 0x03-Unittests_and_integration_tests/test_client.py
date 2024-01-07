@@ -39,7 +39,6 @@ class TestGithubOrgClient(unittest.TestCase):
 
     def test_public_repos_url(self):
         """ Test _public_repos_url property
-            memoize
         """
         with patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
                           return_value={"repos_url": "holberton"}) as mock_obj:
@@ -60,10 +59,27 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
                   return_value={"repos_url": "holberton"})
     def test_public_repos(self, mock_org):
-        """Test _public_repos_url property"""
+        """ Test _public_repos_url property
+        """
 
         # Create an instance of GithubOrgClient
         test_client = GithubOrgClient("holberton")
 
         # Access the _public_repos_url property
         test_return = test_client.public_repos
+
+    @parameterized.extend([
+        ({"license": {"key": "my_license"}}, "my_license"),
+        ({"license": {"key": "other_license"}}, "my_license"),
+    ])
+    def test_has_license(self, repo, license_key):
+        """ Test _public_repos_url property
+        """
+
+        # Create an instance of GithubOrgClient
+        test_client = GithubOrgClient("holberton")
+
+        # Access the _public_repos_url property
+        test_return = test_client.has_license(repo, license_key)
+
+        #
