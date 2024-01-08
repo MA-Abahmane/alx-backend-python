@@ -60,6 +60,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch("client.get_json", return_value=[{"name": "holberton"}])
     def test_public_repos(self, mock_get_json):
+        """ test public repos
+        """
         # Mock the get_json method to return a specific value
         with patch.object(GithubOrgClient,
                           "_public_repos_url",
