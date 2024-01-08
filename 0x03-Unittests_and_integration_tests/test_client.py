@@ -5,10 +5,12 @@ Parameterize and patch as decorators
 """
 
 import unittest
-from unittest.mock import patch, Mock, PropertyMock
+from urllib.error import HTTPError
 from parameterized import parameterized
+from unittest.mock import patch, Mock, PropertyMock
 
 from client import *
+from fixtures import *
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -84,3 +86,30 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # compare results
         self.assertEqual(test_return, expected_output)
+
+
+@parameterized_class(
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'), 
+    TEST_PAYLOAD
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ class TestIntegrationGithubOrgClient 
+    """
+    
+    @classmethod
+    def setUpClass(cls):
+        """ set up Class 
+        """
+        cls.get_patcher = patch('requests.get', side_effect=HTTPError)
+    
+    @classmethod
+    def tearDownClass(cls):
+        """ tear down Class 
+        """
+        cls.get_patcher.stop()
+
+    @classmethod
+    def test_public_repos(cls):
+        """ test public repos  """
+        test = GithubOrgClient('holberton')
+        assert True
