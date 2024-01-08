@@ -6,7 +6,7 @@ Parameterize and patch as decorators
 
 import unittest
 from urllib.error import HTTPError
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
 from unittest.mock import patch, Mock, PropertyMock
 
 from client import *
