@@ -89,27 +89,35 @@ class TestGithubOrgClient(unittest.TestCase):
 
 
 @parameterized_class(
-    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'), 
+    ('org_payload', 'repos_payload', 'expected_repos', 'apache2_repos'),
     TEST_PAYLOAD
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
-    """ class TestIntegrationGithubOrgClient 
+    """ class TestIntegrationGithubOrgClient
     """
-    
+
     @classmethod
     def setUpClass(cls):
-        """ set up Class 
+        """ set up Class
         """
         cls.get_patcher = patch('requests.get', side_effect=HTTPError)
-    
+
     @classmethod
     def tearDownClass(cls):
-        """ tear down Class 
+        """ tear down Class
         """
         cls.get_patcher.stop()
 
     @classmethod
+    def test_public_repos_with_license(cls):
+        """ test public repos with licens
+        """
+        test = GithubOrgClient('holberton')
+        assert True
+
+    @classmethod
     def test_public_repos(cls):
-        """ test public repos  """
+        """ test public repos
+        """
         test = GithubOrgClient('holberton')
         assert True
