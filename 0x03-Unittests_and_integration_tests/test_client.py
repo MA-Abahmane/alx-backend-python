@@ -6,7 +6,7 @@ Parameterize and patch as decorators
 
 import unittest
 from urllib.error import HTTPError
-from parameterized import parameterized, parameterized_class
+from parameterized import parameterized
 from unittest.mock import patch, Mock, PropertyMock
 
 from client import *
@@ -72,13 +72,20 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
-        ({"license": {"key": "other_license"}}, "my_license", False)
+        ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     def test_has_license(self, repo, license_key, expected_output):
         """ Test _public_repos_url property
         """
-        self.assertEqual(GithubOrgClient.has_license(repo, license_key),
-                         expected_output)
+
+        # Create an instance of GithubOrgClient
+        test_client = GithubOrgClient("holberton")
+
+        # Access the _public_repos_url property
+        test_return = test_client.has_license(repo, license_key)
+
+        # compare results
+        self.assertEqual(test_return, expected_output)
 
 
 @parameterized_class(
@@ -104,12 +111,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     def test_public_repos(self):
         """ test public repos
         """
-        test = GithubOrgClient('abc')
+        test = GithubOrgClient('holberton')
         assert True
 
     def test_public_repos_with_license(self):
         """ test public repos with licens
-            license= "apache-2.0"
         """
-        test = GithubOrgClient('abc')
+        test = GithubOrgClient('holberton')
         assert True
