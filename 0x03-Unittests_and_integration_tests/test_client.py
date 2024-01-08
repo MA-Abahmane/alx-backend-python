@@ -58,25 +58,28 @@ class TestGithubOrgClient(unittest.TestCase):
                              .return_value
                              .get('repos_url'))
 
-    @patch('client.get_json', return_value=[{'name': 'holberton'}])
-    def test_public_repos(self, mock_rslt):
-        """ Test _public_repos property
-        """
-        with patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
-                          return_value={"repos_url": "holberton"}) as mock_obj:
-
-            # Create an instance of GithubOrgClient
+    @patch("client.get_json", return_value=[{"name": "holberton"}])
+    def test_public_repos(self, mock_get_json):
+        # Mock the get_json method to return a specific value
+        with patch.object(GithubOrgClient,
+                          "_public_repos_url",
+                          new_callable=PropertyMock,
+                          return_value="https://api.github.com/") as mock_public_repos_url:
+            
+            # Create an instance of GithubOrgClient with a mock organization name
             test_client = GithubOrgClient("holberton")
 
-            # Access the _public_repos_url property
-            test_return = test_client._public_repos_url
+            # Call the method under test
+            test_return = test_client.public_repos()
 
-            # Assert that the org property was accessed exactly once
-            mock_obj.assert_called_once
+            # Assert that the method returned the expected value
+            self.assertEqual(test_return, ["holberton"])
 
-            self.assertEqual(test_return, mock_obj
-                             .return_value
-                             .get('repos_url'))
+            # Assert that the get_json method was called once
+            mock_get_json.assert_called_once()
+
+            # Assert that the _public_repos_url property was accessed once
+            mock_public_repos_url.assert_called_once()
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
