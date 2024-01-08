@@ -108,14 +108,16 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         """
         cls.get_patcher.stop()
 
-    def test_public_repos_with_license(self):
-        """ test public repos with licens
-        """
-        test = GithubOrgClient('holberton')
-        assert True
-
     def test_public_repos(self):
         """ test public repos
         """
-        test = GithubOrgClient('holberton')
-        assert True
+        test = GithubOrgClient('abc')
+        self.assertEqual(test.org, self.org_payload)
+        self.assertEqual(test.repos_payload, self.repos_payload)
+
+    def test_public_repos_with_license(self):
+        """ test public repos with licens
+        """
+        test = GithubOrgClient('abc')
+        self.assertEqual(test.org, self.org_payload)
+        self.assertEqual(test.repos_payload, self.repos_payload)
