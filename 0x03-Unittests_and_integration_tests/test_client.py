@@ -77,7 +77,8 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_has_license(self, repo, license_key, expected_output):
         """ Test _public_repos_url property
         """
-        self.assertEqual(GithubOrgClient.has_license(repo, license_key), expected_output)
+        self.assertEqual(GithubOrgClient.has_license(repo, license_key),
+                         expected_output)
 
 
 @parameterized_class(
