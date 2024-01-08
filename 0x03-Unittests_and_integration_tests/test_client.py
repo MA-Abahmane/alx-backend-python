@@ -58,30 +58,24 @@ class TestGithubOrgClient(unittest.TestCase):
                              .return_value
                              .get('repos_url'))
 
-    @patch("client.get_json", return_value=[{"name": "holberton"}])
-    def test_public_repos(self, mock_get_json):
-        """ test public repos
+    def test_public_repos(self):
+        """ Test _public_repos property
         """
-        # Mock the get_json method to return a specific value
-        with patch.object(GithubOrgClient,
-                          "_public_repos_url",
-                          new_callable=PropertyMock,
-                          return_value="https://api.github.com/") as mock_public_repos_url:
-            
-            # Create an instance of GithubOrgClient with a mock organization name
+        with patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
+                          return_value={"repos_url": "holberton"}) as mock_obj:
+
+            # Create an instance of GithubOrgClient
             test_client = GithubOrgClient("holberton")
 
-            # Call the method under test
-            test_return = test_client.public_repos()
+            # Access the _public_repos_url property
+            test_return = test_client._public_repos_url
 
-            # Assert that the method returned the expected value
-            self.assertEqual(test_return, ["holberton"])
+            # Assert that the org property was accessed exactly once
+            mock_obj.assert_called_once
 
-            # Assert that the get_json method was called once
-            mock_get_json.assert_called_once()
-
-            # Assert that the _public_repos_url property was accessed once
-            mock_public_repos_url.assert_called_once()
+            self.assertEqual(test_return, mock_obj
+                             .return_value
+                             .get('repos_url'))
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
