@@ -58,7 +58,8 @@ class TestGithubOrgClient(unittest.TestCase):
                              .return_value
                              .get('repos_url'))
 
-    def test_public_repos(self):
+    @patch('client.get_json', return_value=[{'name': 'holberton'}])
+    def test_public_repos(self, mock_rslt):
         """ Test _public_repos property
         """
         with patch.object(GithubOrgClient, "org", new_callable=PropertyMock,
